@@ -58,3 +58,88 @@ git log
 - 원하는 시점의 커밋 확인
 git checkout 커밋아이디(해쉬코드)
 
+#### 특정 파일 및 폴더 깃 상태관리에서 제외
+- 작업 폴더 내에 .gitignore파일 생성  
+> 작업 폴더내 특정 피일을 제외
+abc.txt  
+> 작업 폴더내 특정 확장자 파일은 모두 제외  
+*.확장자명  
+> 작업 폴더내 특정 폴더를 제외  
+/폴더명
+
+#### 커밋 되돌리기
+커밋 되돌리기에는 크게 reset과 revert 두가지 방법이 존재
+
+- reset : 특정 커밋시점으로 되돌린 후 그 이후 커밋을 제거   (reset으로 되돌린 커밋 내역 이후 기록 초기화됨)
+
+- revert : 기존 커밋  내역을  유지하면서 특정 커밋 시점으로 코드 되돌림  
+(resolve conflict 필요)
+
+- reset으로 커밋 되돌리기  
+> 직전 한개의 커밋 되돌림
+git reset HEAD^ --hard  
+> 3단계 이전의 커밋으로 되돌림
+git reset HEAD~3 --hard  
+> 원하는 커밋 시점으로 되돌림
+git reset 커밋아이디(해쉬코드)
+
+- reset으로 커밋을 되돌리면 로컬 저장소에 비해 원격 저장소의 커밋이 더 최신이기 때문에 git push가 불가능 하므로 다음의 명령어로 강제로 push  
+git push origin master  -f
+
+- revert로 커밋 되돌리기  
+git revert 커밋 아이디
+
+
+#### Branch  
+하나의 프로젝트에서 버전별로 복사본을 생성
+
+- 브랜치 생성  
+git branch 브랜치명
+​
+- 브랜치 확인  
+git branch -v
+​
+- 특정 브랜치로 이동  
+git checkout 브랜치명
+​
+- 원격 저장소의 특정 브랜치 가져오기  
+git pull origin 브랜치명  
+> 특정 브랜치를 가져온다음 checkout까지 해줘야 활성화됨  
+git checkout 브랜치명
+
+- 특정 브랜치 삭제  
+git branch -d 브랜치명
+​
+- 삭제된 브랜치 원격저장소에 반영  
+git push origin :삭제한 브랜치명
+​
+- 브랜치 병합
+> 마스터 브랜치로 이동한 상태에서  
+> merge시 합치려고 하는 브랜치에서 동일한 위치의 코드를 변경해야 될 시 충돌방생 (Conflict)
+> Conflict발생시 수작업으로 적용할 코드를 수정 (resolve conflict)  
+git merge 합칠 브랜치명
+
+
+#### 원격 저장소에 작업물 등록
+
+- 원격 저장소 등록  
+git remote add origin 원격저장소URL
+
+- 원격 저장소에 업로드  
+> 특정 브랜치 업로드  
+git push origin 브랜치명  
+> 생성된 모든 브랜치 업로드  
+git push origin --all
+​
+- 원격 저장소의 내용을 내려받아 동기화하기  
+git pull origin 브랜치명
+
+- 원격 저장소의 내용을 통채로   복사해서 내려받기  
+git clone 원격저장소URL  
+
+#### Pull과 Clone의 차이
+Pull : 이미 로컬저장소와 원격저장소가 연결되어 있는 상태에서 원격 저장소의 새롭게 바뀐 내용만 내려받아 동기화  
+Clone : 원격저장소는 있는데 로컬저장소가 없는 경우 통으로 프로젝트를 복사해서 내려받음
+
+#### push로 업로드시 오류가 발생하는 경우
+보통 로컬 저장소보다 원격 저장소의 커밋이 더 최신의 내용일 경우 push 오류 발생하기 때문에 이떄는 먼저 원격 저장소 내용을 pull로 가져와서 동기화한뒤 다시 다시 push 로 업로드
